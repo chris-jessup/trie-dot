@@ -1,0 +1,52 @@
+<html>
+    <body>
+        
+    <script type='text/javascript' src='trie_dot.js'></script>
+    <div id='output'>hello there</div>
+    <script type="module">
+        import { Graphviz } from "https://cdn.jsdelivr.net/npm/@hpcc-js/wasm/dist/graphviz.js";
+
+        const graphviz = await Graphviz.load();
+        const div = document.getElementById("output");
+        let input = document.getElementById('input').value;
+        let graph = get_graph(input);
+        console.log(graph);
+        div.innerHTML = graphviz.layout(graph, "svg", "dot");
+
+
+        /* Link up text to graph */
+        document.getElementById('input').addEventListener('keyup', (event) => {
+            let input = document.getElementById('input').value;
+            let graph = get_graph(input);
+            div.innerHTML = graphviz.layout(graph, "svg", "dot");
+        });
+
+        document.getElementById('test_submit').addEventListener('click', (event) => {
+            let input = document.getElementById('input').value;
+            let test = document.getElementById('test').value
+            let graphs = get_graphs_with_text(input, test);
+            for(let i = 0; i < graphs.length; i++){
+                setTimeout( () => div.innerHTML = graphviz.layout(graphs[i], "svg", "dot"), (i+1)*400);
+            }
+        });
+    </script>
+
+    <br>
+        Type in below, one word per line
+    <br>
+
+    <textarea id='input'>
+hi
+hill
+help
+hello
+brian
+    </textarea>
+
+    <br>
+        <input id='test'></input>
+        <input id='test_submit' type='submit' value='Run'></input>
+    <br>
+
+    </body>
+</html>
